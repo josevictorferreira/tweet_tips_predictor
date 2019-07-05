@@ -15,7 +15,7 @@ class TestPredictor():
         """ Setups the TipPredictor object for using in the test methods. """
         DB.init(utils.get_env('MONGODB_DATABASE_TEST'))
         seed_collection_with_csv(utils.get_env('DATA_FILENAME'))
-        cls.predictor = TipPredictor()
+        cls.predictor = TipPredictor(Tweet.all())
 
     def test_predictor_is_initialized(self):
         """ Tests if the predictor is instance of TipPredictor class. """

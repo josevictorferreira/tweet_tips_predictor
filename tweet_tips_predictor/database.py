@@ -27,6 +27,11 @@ class DB:
         return DB.DATABASE[collection].find_one(query)
 
     @staticmethod
+    def get_last(collection):
+        """ Return the last inserted data in collection. """
+        return list(DB.DATABASE[collection].find().sort([('created_at', -1)]).limit(1))[0]
+
+    @staticmethod
     def find_one_and_update(collection, _id, data):
         """ Find one record and update it. """
         return DB.DATABASE[collection].find_one_and_update({"_id": _id}, {"$set": data})

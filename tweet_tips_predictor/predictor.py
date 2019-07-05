@@ -5,15 +5,14 @@ import pandas
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
-from tweet_tips_predictor.models.tweet import Tweet
 from tweet_tips_predictor.utils import get_env
 
 
 class TipPredictor():
     """ TipPredictor, predict tweets using Machine Learning, SGDC classifier. """
 
-    def __init__(self):
-        self.dataset = pandas.DataFrame(Tweet.all())
+    def __init__(self, data):
+        self.dataset = pandas.DataFrame(data)
         self.pipeline = Pipeline([
             ('vect', CountVectorizer()),
             ('tfidf', TfidfTransformer()),
@@ -23,7 +22,6 @@ class TipPredictor():
                 alpha=1e-3,
                 random_state=42)))
             ])
-        print(self.dataset.head())
         self.pipeline = self.pipeline.fit(
             self.dataset['text'],
             self.dataset['is_tip'])

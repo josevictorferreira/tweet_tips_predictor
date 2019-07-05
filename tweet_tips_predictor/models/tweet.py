@@ -3,6 +3,7 @@
 from datetime import datetime
 from dateutil.parser import parse
 from tweet_tips_predictor.database import DB
+from tweet_tips_predictor.predictor import TipPredictor
 
 class Tweet:
     """ Class responsible for the Tweet class model. """
@@ -18,6 +19,12 @@ class Tweet:
         self.prediction = False
         self.is_evaluated = False
         self._set_created_at(created_at)
+
+    def predict(self):
+        """ Predict using the TipPredictor model if the text is a tip or not. """
+        predictor = TipPredictor(Tweet.all())
+        prediction = predictor.predict(self.text)
+        self.prediction = prediction
 
     def _set_created_at(self, created_at):
         if created_at is None:
@@ -79,3 +86,8 @@ class Tweet:
     def delete_all():
         """ Delete all from model collection. """
         return DB.clean_data(Tweet.COLLECTION)
+
+    @staticmethod
+    def last():
+        """ Get the last tweet inserted on database. """
+        return DB.get_last(Tweet.COLLECTION)

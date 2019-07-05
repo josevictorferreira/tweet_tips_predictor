@@ -17,3 +17,9 @@ def dataset_path(filename):
     filepath = os.path.abspath(
         os.path.join(basepath, "..", "datasets", filename))
     return filepath
+
+def get_config_object():
+    """ Returns the correct config object for the correct FLASK_ENV """
+    if get_env('FLASK_ENV') == 'production':
+        return 'config.ProductionConfig'
+    return 'config.DevelopmentConfig'

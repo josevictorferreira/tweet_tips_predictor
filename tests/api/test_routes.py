@@ -1,8 +1,10 @@
 """ Test module responsible for testing the webserver API routes.
 """
 
+from datetime import datetime
 from flask import json
 from tweet_tips_predictor.utils import get_env
+from tweet_tips_predictor.models.tweet import Tweet
 
 def test_unauthorized_remote(app):
     """ Checks if the unauthorized response are given for a not permitted
@@ -48,9 +50,14 @@ def test_prediction(app):
     test_client = app.test_client()
     resp = test_client.post(
         "/predict",
-        data=json.dumps({"text": "A random text."}),
+        data=json.dumps({"text": "A random text.", "tipster": "Myself"}),
         content_type='application/json')
     data = json.loads(resp.get_data(as_text=True))
     assert resp.status_code == 200
     assert data['status'] == 200
     assert isinstance(data['result'], bool)
+    tweet = Tweet.last()
+    assert tweet['text'] == "A random text."
+    assert not tweet['is_tip']
+    assert isinstance(tweet['created_at'], datetime)
+    assert isinstance(tweet['prediction'], bool)

@@ -4,7 +4,7 @@ Module responsible for setting all routes methods in the BPlication.
 
 from flask import request, jsonify, json, current_app
 from tweet_tips_predictor.main import BP
-from tweet_tips_predictor.predictor import TipPredictor
+from tweet_tips_predictor.models.tweet import Tweet
 
 @BP.before_app_request
 def validate_remote():
@@ -43,11 +43,13 @@ def predict():
     and returns the result prediction.
     """
     text = json.loads(request.data)['text']
-    predictor = TipPredictor()
-    prediction = predictor.predict(text)
+    tipster = json.loads(request.data)['tipster']
+    tweet = Tweet(text, tipster)
+    tweet.predict()
+    tweet.insert()
     message = {
         "status": 200,
-        "result": prediction
+        "result": tweet.prediction
     }
     resp = jsonify(message)
     resp.status_code = 200
