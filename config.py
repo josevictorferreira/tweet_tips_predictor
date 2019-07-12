@@ -13,6 +13,7 @@ class Config(): # pylint: disable=too-few-public-methods
     PERMITTED_REMOTES = get_env("PERMITTED_REMOTES").split(",")
     DATA_FILENAME = get_env("DATA_FILENAME") or "tweets.csv"
     MONGODB_DATABASE = get_env("MONGODB_DATABASE")
+    SERVER_NAME = get_env("APP_HOST") + ":" + get_env("APP_PORT")
 
 class DevelopmentConfig(Config): # pylint: disable=too-few-public-methods
     """ Config class for the development environment.

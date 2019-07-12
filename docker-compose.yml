@@ -1,11 +1,40 @@
 version: "3"
 
 services:
-  web:
-    build: .
-    ports:
-      - "5000:5000"
-    links:
-      - mongodb
   mongodb:
     image: mongo:3.0.2
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+  flask:
+    image: webapp-flask
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    environment:
+      FLASK_ENV: "${FLASK_ENV}"
+      APP_HOST: "${APP_HOST}"
+      APP_PORT: "${APP_PORT}"
+      PERMITTED_REMOTTED: "${PERMITTED_REMOTES}"
+      DATA_FILENAME: "${DATA_FILENAME}"
+      MONGODB_URI: "${MONGODB_URI}"
+      MONGODB_DATABASE: "${MONGODB_DATABASE}"
+      MONGODB_DATABASE_TEST: "${MONGODB_DATABASE_TEST}"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    volumes:
+      - "./:/app"
+  nginx:
+    image: webapp-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - 5000:80
+    depends_on:
+      - flask
+
+volumes:
+  app:

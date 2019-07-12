@@ -2,15 +2,22 @@ FROM python:3.7.3
 
 ENV PATH "/root/.poetry/bin:${PATH}"
 ENV POETRY_VERSION 0.12.16
+ENV APP /opt/app/
 
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
-WORKDIR /app
-COPY poetry.lock pyproject.toml /app/
+RUN mkdir $APP
+WORKDIR $APP
+
+EXPOSE 5000
+
+COPY . $APP
 
 RUN poetry config settings.virtualenvs.create false
-RUN poetry install --no-interaction --no-dev
+RUN poetry install -E production --no-interaction --no-dev
 
-COPY . /app
+COPY . .
 
-RUN python /app/app.py
+VOLUME $APP
+
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
