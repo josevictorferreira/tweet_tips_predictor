@@ -20,4 +20,6 @@ COPY . .
 
 VOLUME $APP
 
+RUN ls -la
+
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
