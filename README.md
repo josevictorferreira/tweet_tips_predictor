@@ -1,5 +1,5 @@
 ## Tweet Tips Predictor
-   - A micro service for checking if a tweet is a betting tip or not.
+   - A micro service for checking if a tweet is a betting tip or not. The service uses Machine Learning for indentify and predict the result given the text of the tweet.
 
 ## Config and Build
    - Install docker on your machine.
