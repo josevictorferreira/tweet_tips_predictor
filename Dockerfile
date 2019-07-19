@@ -18,8 +18,4 @@ RUN poetry install -E production --no-interaction --no-dev
 
 COPY . .
 
-VOLUME $APP
-
-RUN ls -la
-
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
