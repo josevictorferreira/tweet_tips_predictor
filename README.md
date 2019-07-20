@@ -8,7 +8,7 @@
       FLASK_ENV=development
       APP_HOST=0.0.0.0
       APP_PORT=5000
-      PERMITTED_REMOTES=0.0.0.0,127.0.0.1
+      PERMITTED_REMOTES=0.0.0.0,127.0.0.1,127.20.0.1
       DATA_FILENAME=tweets.csv
       MONGODB_URI=mongodb://mongodb:27017/
       MONGODB_DATABASE=tweets
